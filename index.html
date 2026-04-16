@@ -11,6 +11,9 @@
 </head>
 <body>
 
+  <!-- Floating Code Symbols -->
+  <div class="code-symbols" id="code-symbols" aria-hidden="true"></div>
+
   <!-- Nav -->
   <nav class="nav">
     <a href="#" class="nav-logo">sp.</a>
@@ -183,5 +186,74 @@
     <p>&copy; 2026 Sotiris Papasotiriou</p>
   </footer>
 
+  <script>
+    (function () {
+      var symbols = ['{ }', '</>', '=>', '//', '( )', '&&', '[ ]', '::',  '!=', '++', '**', '||', '~>', '$_', '#!', '<%'];
+      var container = document.getElementById('code-symbols');
+      var cols = 20;
+      var rows = 31;
+      var fragment = document.createDocumentFragment();
+
+      for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+          var span = document.createElement('span');
+          span.className = 'sym';
+          var speed = ((Math.random() - 0.5) * 0.1).toFixed(4);
+          span.dataset.speed = speed;
+          span.style.top = (r / rows * 100 + (Math.random() * 2 - 1)).toFixed(1) + '%';
+          span.style.left = (c / cols * 100 + (Math.random() * 3 - 1.5)).toFixed(1) + '%';
+          span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+          fragment.appendChild(span);
+        }
+      }
+      container.appendChild(fragment);
+
+      var syms = container.querySelectorAll('.sym');
+      var ticking = false;
+
+      window.addEventListener('scroll', function () {
+        if (!ticking) {
+          window.requestAnimationFrame(function () {
+            var scrollY = window.scrollY;
+            syms.forEach(function (s) {
+              var speed = parseFloat(s.dataset.speed);
+              s.style.transform = 'translateY(' + scrollY * speed + 'px)';
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      // Glow effect — randomly light up symbols like bulbs (up to 20 at once)
+      var glowCount = 0;
+      var maxGlow = 50;
+
+      function glowRandom() {
+        if (glowCount >= maxGlow) return;
+        var idx = Math.floor(Math.random() * syms.length);
+        var el = syms[idx];
+        if (el.classList.contains('glow')) return;
+
+        el.classList.add('glow');
+        glowCount++;
+
+        var onTime = 800 + Math.random() * 1700;
+        setTimeout(function () {
+          el.classList.remove('glow');
+          glowCount--;
+        }, onTime);
+      }
+
+      // Fire multiple glows at random intervals
+      function scheduleGlow() {
+        var delay = 100 + Math.random() * 400;
+        setTimeout(function () {
+          glowRandom();
+          scheduleGlow();
+        }, delay);
+      }
+      scheduleGlow();
+    })();
+  </script>
 </body>
 </html>

@@ -408,6 +408,50 @@ ul {
 }
 
 /* ==========================================
+   Floating Code Symbols
+   ========================================== */
+.code-symbols {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.sym {
+  position: absolute;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0.08;
+  will-change: transform, opacity, text-shadow;
+  transition: transform 0.1s linear, opacity 1.5s ease-in-out, text-shadow 1.5s ease-in-out;
+  user-select: none;
+}
+
+.sym.glow {
+  opacity: 0.6;
+  text-shadow: 0 0 8px var(--accent), 0 0 20px var(--accent);
+}
+
+.sym:nth-child(odd) {
+  font-size: 0.75rem;
+  opacity: 0.06;
+}
+
+.sym:nth-child(3n) {
+  font-size: 1rem;
+  opacity: 0.1;
+}
+
+/* Ensure content stays above symbols */
+.nav, .hero, .section, .footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
    Responsive
    ========================================== */
 @media (max-width: 640px) {
